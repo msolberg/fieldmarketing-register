@@ -20,27 +20,27 @@
 <html>
 
 <head>
-    <title>SpringMVC Starter Application</title>
+    <title>Event Registration</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="<c:url value="/static/resources/css/screen.css"/>"/>
 </head>
 
 <body>
 <div id="container">
-    <div class="dualbrand">
-        <img src="<c:url value="/static/resources/gfx/rhjb_eap_logo.png"/>"/>
-    </div>
-    <div id="content">
-        <h1>Welcome to JBoss!</h1>
+    <div id="header">
+        <h2>EVENT</h2>
 
+        <h1>Red Hat Road Tour | Charlotte</h1>
         <div>
-            <p>You have successfully deployed a basic SpringMVC web application.</p>
+        <p>September 28, 2016 | Charlotte, NC</p>
         </div>
+    </div>
+    <div id="registrationform">
 
         <form:form commandName="newMember" id="reg">
-            <h2>Member Registration</h2>
+            <h2>Registration</h2>
 
-            <p>Enforces annotation-based constraints defined on the model class.</p>
+            <p>Register for the upcoming event.</p>
             <table>
                 <tbody>
                 <tr>
@@ -72,50 +72,6 @@
                 </tr>
             </table>
         </form:form>
-        <h2>Members</h2>
-        <c:choose>
-            <c:when test="${members.size()==0}">
-                <em>No registered members.</em>
-            </c:when>
-            <c:otherwise>
-                <table id="membersTable" class="simpletablestyle">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone #</th>
-                            <th>REST URL</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach items="${members}" var="member">
-                            <tr>
-                                <td>${member.id}</td>
-                                <td>${member.name}</td>
-                                <td>${member.email}</td>
-                                <td>${member.phoneNumber}</td>
-                                <td><a href="<c:url value="/rest/members/${member.id}"/>">/rest/members/${member.id}</a></td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-                <table class="simpletablestyle">
-                    <tr>
-                        <td>
-                            REST URL for all members: <a href="<c:url value="/rest/members"/>">/rest/members</a>
-                        </td>
-                    </tr>
-                </table>
-            </c:otherwise>
-        </c:choose>
-    </div>
-    <div id="aside">
-        <p>Learn more about Red Hat JBoss Enterprise Application Platform 6.</p>
-        <ul>
-            <li><a href="https://access.redhat.com/site/documentation/JBoss_Enterprise_Application_Platform/">Documentation</a></li>
-            <li><a href="http://red.ht/jbeap-6">Product Information</a></li>
-        </ul>
     </div>
     <div id="footer">
         <p>
