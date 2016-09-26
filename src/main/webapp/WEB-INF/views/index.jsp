@@ -32,7 +32,7 @@
 
         <h1>Red Hat Road Tour | Charlotte</h1>
         <div>
-        <p>September 28, 2016 | Charlotte, NC</p>
+        <h2>September 28, 2016 | Charlotte, NC</h2>
         </div>
     </div>
     <div id="registrationform">
