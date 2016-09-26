@@ -9,27 +9,27 @@
     glance_image: rhel-guest-image-7.2-20160302.0
   tasks:
   - os_network:
-      name: spring-demo-private
+      name: fieldmarketing_register_private
   - os_subnet:
-      name: spring-demo-private
-      network_name: spring-demo-private
+      name: fieldmarketing_register_private
+      network_name: fieldmarketing_register_private
       cidr: 192.168.0.0/24
       gateway_ip: 192.168.0.1
       dns_nameservers: "{{ nameservers }}"
       allocation_pool_start: 192.168.0.50
       allocation_pool_end: 192.168.0.200
   - os_router:
-      name: spring-demo
+      name: fieldmarketing_register
       network: "{{ public_network_id }}"
       interfaces:
-        - spring-demo-private
+        - fieldmarketing_register_private
   - os_port:
       name: web-port
-      network: spring-demo-private
+      network: fieldmarketing_register_private
       fixed_ips:
         - ip_address: 192.168.0.100
   - os_server:
-      name: spring_demo_ansible_web
+      name: fieldmarketing_register_web
       state: present
       image: "{{ glance_image }}"
       flavor: m1.small
@@ -40,14 +40,14 @@
       wait: yes
       meta:
         hostname: web.localdomain
-    register: spring_demo_ansible_web
+    register: fieldmarketing_register_web
   - os_port:
       name: app-port
-      network: spring-demo-private
+      network: fieldmarketing_register_private
       fixed_ips:
         - ip_address: 192.168.0.120
   - os_server:
-      name: spring_demo_ansible_app
+      name: fieldmarketing_register_app
       state: present
       image: "{{ glance_image }}"
       flavor: m1.medium
@@ -58,14 +58,14 @@
       wait: yes
       meta:
         hostname: app.localdomain
-    register: spring_demo_ansible_app
+    register: fieldmarketing_register_app
   - os_port:
       name: db-port
-      network: spring-demo-private
+      network: fieldmarketing_register_private
       fixed_ips:
         - ip_address: 192.168.0.200
   - os_server:
-      name: spring_demo_ansible_db
+      name: fieldmarketing_register_db
       state: present
       image: "{{ glance_image }}"
       flavor: m1.medium
@@ -76,12 +76,12 @@
       wait: yes
       meta:
         hostname: db.localdomain
-    register: spring_demo_ansible_db
+    register: fieldmarketing_register_db
 
   - name: wait for ssh on web
     command: >
       ssh -o BatchMode=yes -oStrictHostKeyChecking=no
-      cloud-user@{{spring_demo_ansible_web.server.public_v4}} true
+      cloud-user@{{fieldmarketing_register_web.server.public_v4}} true
     register: result
     until: result|success
     retries: 30
@@ -89,7 +89,7 @@
   - name: wait for ssh on app
     command: >
       ssh -o BatchMode=yes -oStrictHostKeyChecking=no
-      cloud-user@{{spring_demo_ansible_app.server.public_v4}} true
+      cloud-user@{{fieldmarketing_register_app.server.public_v4}} true
     register: result
     until: result|success
     retries: 30
@@ -97,7 +97,7 @@
   - name: wait for ssh on db
     command: >
       ssh -o BatchMode=yes -oStrictHostKeyChecking=no
-      cloud-user@{{spring_demo_ansible_db.server.public_v4}} true
+      cloud-user@{{fieldmarketing_register_db.server.public_v4}} true
     register: result
     until: result|success
     retries: 30
@@ -105,13 +105,13 @@
   
   - name: add web server to inventory
     add_host: name=web groups=webservers,provisioned
-              ansible_host={{ spring_demo_ansible_web.server.public_v4 }}
+              ansible_host={{ fieldmarketing_register_web.server.public_v4 }}
   - name: add app server to inventory
     add_host: name=app groups=appservers,provisioned
-              ansible_host={{ spring_demo_ansible_app.server.public_v4 }}
+              ansible_host={{ fieldmarketing_register_app.server.public_v4 }}
   - name: add db server to inventory
     add_host: name=db groups=dbservers,provisioned
-              ansible_host={{ spring_demo_ansible_db.server.public_v4 }}
+              ansible_host={{ fieldmarketing_register_db.server.public_v4 }}
   
 - name: Register provisioned systems to Satellite
   hosts: provisioned

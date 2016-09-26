@@ -49,7 +49,7 @@ resources:
   PrivateNetwork:
     type: OS::Neutron::Net
     properties:
-      name: three-tier-private
+      name: { get_param: 'OS::stack_name' }
   
   PrivateSubnet:
     type: OS::Neutron::Subnet
@@ -104,7 +104,7 @@ resources:
                 rpm -ivh http://$satellite_fqdn/pub/katello-ca-consumer-latest.noarch.rpm
 
                 echo "Registering the System"
-                subscription-manager register --org="$satellite_org" --name="web.openstacklocal" --activationkey="$satellite_key"
+                subscription-manager register --org="$satellite_org" --name="$stack_name-web.openstacklocal" --activationkey="$satellite_key"
 
                 echo "Installing Katello Agent"
                 yum -t -y -e 0 install katello-agent
@@ -171,6 +171,7 @@ resources:
             $satellite_fqdn: {get_param: satellite_fqdn}
             $satellite_org: {get_param: satellite_org}
             $satellite_key: {get_param: satellite_key}
+            $stack_name: { get_param: 'OS::stack_name' }
 
   WebPort:
     type: OS::Neutron::Port
@@ -218,7 +219,7 @@ resources:
                 rpm -ivh http://$satellite_fqdn/pub/katello-ca-consumer-latest.noarch.rpm
                 
                 echo "Registering the System"
-                subscription-manager register --org="$satellite_org" --name="app.openstacklocal" --activationkey="$satellite_key"
+                subscription-manager register --org="$satellite_org" --name="$stack_name-app.openstacklocal" --activationkey="$satellite_key"
                 
                 echo "Installing Katello Agent"
                 yum -t -y -e 0 install katello-agent
@@ -247,6 +248,7 @@ resources:
             $satellite_fqdn: {get_param: satellite_fqdn}
             $satellite_org: {get_param: satellite_org}
             $satellite_key: {get_param: satellite_key}
+            $stack_name: { get_param: 'OS::stack_name' }
             $jenkins_url: {get_param: jenkins_url}
             $jenkins_job_name: {get_param: jenkins_job_name}
   
@@ -284,7 +286,7 @@ resources:
                 rpm -ivh http://$satellite_fqdn/pub/katello-ca-consumer-latest.noarch.rpm
                 
                 echo "Registering the System"
-                subscription-manager register --org="$satellite_org" --name="db.openstacklocal" --activationkey="$satellite_key"
+                subscription-manager register --org="$satellite_org" --name="$stack_name-db.openstacklocal" --activationkey="$satellite_key"
                 
                 echo "Installing Katello Agent"
                 yum -t -y -e 0 install katello-agent
@@ -299,6 +301,7 @@ resources:
             $satellite_fqdn: {get_param: satellite_fqdn}
             $satellite_org: {get_param: satellite_org}
             $satellite_key: {get_param: satellite_key}
+            $stack_name: { get_param: 'OS::stack_name' }
   
   
   DbPort:
